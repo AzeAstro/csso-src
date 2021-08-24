@@ -24,4 +24,5 @@ Or if you have one of the problembs listed here and you can't solve then you can
 	Connect to server failed; check $P4PORT.
 	TCP connect to perforce:1666 failed.
 	Temporary failure in name resolution` - Fixed for myself but it is not in installer/script yet. I will make script for it too.
-- `ccache: FATAL: /valve/steam-runtime/bin/g++: execv returned (No such file or directory)` - *Welp*
+- `ccache: FATAL: /valve/steam-runtime/bin/g++: execv returned (No such file or directory)` - Fixed but scenario is same as error above.
+- `cc1plus: error: unrecognized command line option '-std=c++11'` - *Welp*

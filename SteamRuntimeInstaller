@@ -1,0 +1,18 @@
+#!/usr/bin/python3
+import os
+import subprocess
+
+usernamesubproc=subprocess.Popen(["whoami"],stdout=subprocess.PIPE)
+username=usernamesubproc.communicate()[0]
+username=username.decode("utf-8")
+os.system('sudo mkdir /valve')
+os.system(f"sudo chown {username}: /valve")
+os.chdir("/valve")
+os.system("wget http://media.steampowered.com/client/runtime/steam-runtime-sdk_latest.tar.xz")
+os.system("tar xvf steam-runtime-sdk_latest.tar.xz")
+os.system("rm steam-runtime-sdk_latest.tar.xz")
+os.system("mv steam-runtime-sdk_* steam-runtime")
+os.chdir("steam-runtime")
+
+print("Select 3 from platforms(First question in setup.sh) and select 'release' at seconds question. And answer as 'Y' to all update questions")
+os.system("./setup.sh")
