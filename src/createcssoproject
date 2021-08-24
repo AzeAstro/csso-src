@@ -1,0 +1,2 @@
+#!/bin/bash
+/home/running/Documents/csso-src/src/devtools/bin/vpc_linux /csso +everything /mksln csso /nop4add /nofpo

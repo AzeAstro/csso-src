@@ -1,0 +1,78 @@
+#!/usr/bin/python3
+import subprocess
+import os
+
+
+title='''
+
+  ____ ____ ____   ___    ___           _        _ _           
+ / ___/ ___/ ___| / _ \  |_ _|_ __  ___| |_ __ _| | | ___ _ __ 
+| |   \___ \___ \| | | |  | || '_ \/ __| __/ _` | | |/ _ \ '__|
+| |___ ___) |__) | |_| |  | || | | \__ \ || (_| | | |  __/ |   
+ \____|____/____/ \___/  |___|_| |_|___/\__\__,_|_|_|\___|_|  
+'''
+
+print(title)
+class Installer:
+    def __init__(self) -> None:
+        pass
+    
+
+    def gcc(self):
+        print("[I] Installing GCC. Please,wait for a minute.")
+        gccInstall=subprocess.Popen(["sudo","apt-get","install","gcc","-y"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        outmsg,errmsg=gccInstall.communicate()
+        if errmsg==b'':
+            print("[I] GCC successfully installed.")
+            self.helix(self)
+        else:
+            print(f"[!] Error occured during installing GCC: {errmsg.decode('utf-8')}")
+
+    def helix(self):
+        print("[I] Installing Helix Core Server.(P4 Client)...")
+        os.system("wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add -")
+        if True:
+            sourcesList=open("/etc/apt/sources.list")
+            lines=sourcesList.readlines()
+            release=""
+            for line in lines:
+                for word in line.split():
+                    if word in ["precise", "trusty", "xenial", "bionic","focal"]:
+                        release=word
+                        break
+            if release=="":
+                print(f"[!] Error: Couldn't find distro release.")
+            else:
+                perforceList=open("/etc/apt/sources.list.d/perforce.list","w")
+                perforceList.write(f"deb http://package.perforce.com/apt/ubuntu {release} release")
+                perforceList.close()
+                update=subprocess.Popen(["sudo","apt-get","update"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+                outupdate,errupdate=update.communicate()
+                if errupdate==b"":
+                    helixInstall=subprocess.Popen(["sudo","apt-get","install","helix-p4d"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+                    helixout,helixerr=helixInstall.communicate()
+                    if helixerr==b"":
+                        print("[I] Installation of Helix Core successfully ended.")
+                        self.createProject(self)
+                    else:
+                        print(f"[!] Error occured during installing Helix Core: {helixerr.decode('utf-8')}")
+                else:
+                    print(f"[!] Error occured during apt-get update command: {errupdate.decode('utf-8')}")
+    
+    def createProject(self):
+        print("[I] Starting to create csso project....")
+        if os.path.isdir("src"):
+            os.chdir("src")
+            createprojout,createprojerr=subprocess.Popen(["./createcssoproject"],stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
+            if createprojerr==b"":
+                print("[I] Succesfully created csso makefile.")
+            else:
+                print(f"[!] Error during creating project: {createprojerr}")
+        else:
+            print("[!] Error: source(src) folder not found. Are script and src folder in same directory??")
+
+if __name__=="__main__":
+    if os.geteuid() == 0:
+        Installer.gcc(Installer)
+    else:
+        print("Run script as SUDO!")
