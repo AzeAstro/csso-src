@@ -1,0 +1,7 @@
+#!/bin/bash
+chmod +x src/devtools/bin/vpc_linux
+chmod +x src/devtools/bin/linux/ccache
+chmod +x src/createcssoproject
+sudo ./installer
+sudo ./SteamRuntimeInstaller
+./P4Server

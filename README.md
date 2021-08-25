@@ -8,7 +8,7 @@ This mod is only for CSS v91 and above(doesn't work on v34)
 ## Installation
 Run as **SUDO**: 
 ```bash
-sudo ./installer
+sudo ./notgg
 ```
 
 

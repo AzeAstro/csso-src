@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+import os
+import subprocess
+
+if os.path.isdir("src"):
+    print("[I] Creating root directory for Perforce Deamon")
+    os.mkdir("p4root")
+else:
+    print("[I] Couldn't find src directory of project. Creating folder here.")
+    os.mkdir("p4root")
+
+username=subprocess.Popen(["whoami"],stdout=subprocess.PIPE).communicate()[0].decode("utf-8")
+p4dProc=subprocess.Popen(["p4d","-r","p4root","-In",username,"&"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+p4dout,p4derr=p4dProc.communicate()
+if p4dProc==b"":
+    print("[I] P4D service sucessfully started. Now you can compile project.")
+else:
+    print(f"[!] Error during starting P4 server: {p4derr.decode('utf-8')}")
+    os.rmdir("p4root")
